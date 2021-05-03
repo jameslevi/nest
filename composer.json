@@ -1,0 +1,27 @@
+{
+    "name": "jameslevi/nest",
+    "description": "Is a simple file-based PHP caching library.",
+    "keywords": [
+        "cache",
+        "caching"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Levi Crisostomo",
+            "email": "nerdlabenterprise@gmail.com",
+            "homepage": "https://github.com/jameslevi"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "jameslevi/objectify": "^1.0",
+        "jameslevi/string": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Graphite\\Component\\Nest\\": "src/"
+        }
+    }
+}
