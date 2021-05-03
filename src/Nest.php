@@ -153,7 +153,7 @@ class Nest
         {
             $path = $this->path . "/" . $this->getHash() . ".php";
             
-            if(file_exists($path))
+            if(file_exists($path) && is_writable($path))
             {
                 unlink($path);
             }
@@ -303,11 +303,11 @@ class Nest
     }
 
     /**
-     * Return the number of data from cache database.
+     * Return the number of data from the cache database.
      * 
      * @return  int
      */
-    public function size()
+    public function count()
     {
         return count($this->data->keys());
     }
@@ -420,6 +420,66 @@ class Nest
     }
 
     /**
+     * Destroy or delete a cache database.
+     * 
+     * @param   string $key
+     * @param   string $path
+     * @param   string $algo
+     * @return  bool
+     */
+    public static function destroy(string $key, string $path = null, string $algo = null)
+    {
+        $path = ($path ?? self::getStoragePath());
+
+        if(!str_end_with($path, "/"))
+        {
+            $path .= "/";
+        }
+
+        $path .= self::hash($key, $algo ?? self::getHashAlgorithm()) . ".php";
+
+        if(file_exists($path) && is_writable($path))
+        {
+            unlink($path);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Destroy all saved cache databases.
+     * 
+     * @param   string $path
+     * @return  bool
+     */
+    public static function destroyAll(string $path = null)
+    {
+        $path = $path ?? self::getStoragePath();
+
+        if(!str_end_with($path, "/"))
+        {
+            $path .= "/";
+        }
+
+        if(file_exists($path))
+        {
+            foreach(glob($path . "*") as $file)
+            {
+                if(strtolower(pathinfo($file, PATHINFO_EXTENSION)) == 'php' && is_file($file))
+                {
+                    unlink($file);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Return cache instance object.
      * 
      * @param   string $key
@@ -440,7 +500,7 @@ class Nest
     public static function __callStatic(string $name, array $arguments)
     {
         $key = str_camel_to_kebab($name);
-        $obj = Nest::context($key);
+        $obj = self::context($key);
         $val = $arguments[0] ?? null;
         $set = $arguments[1] ?? null;
 
