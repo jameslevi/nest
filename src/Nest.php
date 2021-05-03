@@ -35,6 +35,13 @@ class Nest
     private static $hash_algo = 'md5';
 
     /**
+     * Cache file extension.
+     * 
+     * @var string
+     */
+    private static $ext = 'php';
+
+    /**
      * Cache database name.
      * 
      * @var string
@@ -119,7 +126,7 @@ class Nest
      */
     private function load()
     {
-        $path = $this->path . "/" . $this->getHash() . ".php";
+        $path = $this->path . "/" . $this->getHash() . "." . self::$ext;
         $data = array();
 
         if(!self::exists($this->name))
@@ -151,7 +158,7 @@ class Nest
     {
         if($this->changed && $this->changes > 0)
         {
-            $path = $this->path . "/" . $this->getHash() . ".php";
+            $path = $this->path . "/" . $this->getHash() . "." . self::$ext;
             
             if(file_exists($path) && is_writable($path))
             {
@@ -429,14 +436,14 @@ class Nest
      */
     public static function destroy(string $key, string $path = null, string $algo = null)
     {
-        $path = ($path ?? self::getStoragePath());
+        $path = $path ?? self::getStoragePath();
 
-        if(!str_end_with($path, "/"))
+        if(!str_ends_with($path, "/"))
         {
             $path .= "/";
         }
 
-        $path .= self::hash($key, $algo ?? self::getHashAlgorithm()) . ".php";
+        $path .= self::hash($key, $algo ?? self::getHashAlgorithm()) . "." . self::$ext;
 
         if(file_exists($path) && is_writable($path))
         {
@@ -458,7 +465,7 @@ class Nest
     {
         $path = $path ?? self::getStoragePath();
 
-        if(!str_end_with($path, "/"))
+        if(!str_ends_with($path, "/"))
         {
             $path .= "/";
         }
@@ -467,7 +474,7 @@ class Nest
         {
             foreach(glob($path . "*") as $file)
             {
-                if(strtolower(pathinfo($file, PATHINFO_EXTENSION)) == 'php' && is_file($file))
+                if(strtolower(pathinfo($file, PATHINFO_EXTENSION)) == self::$ext && is_file($file))
                 {
                     unlink($file);
                 }
