@@ -1,6 +1,6 @@
 # Nest
 
-![](https://img.shields.io/badge/packagist-v1.0.0-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)  
+![](https://img.shields.io/badge/packagist-v1.0.1-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)  
 
 Is a simple file-based PHP caching library.
 
@@ -31,7 +31,7 @@ use Graphite\Component\Nest\Nest;
 ```php
 Nest::setStoragePath(__DIR__ . "/storage/cache");
 ```
-5. Set the default hash algorithm to use.
+5. Set the default hash algorithm to use. The default algorithm is "md5".
 ```php
 Nest::setHashAlgorithm("md5");
 ```
@@ -132,11 +132,11 @@ Nest::db()->remove('token')->write()
 ```
 
 ## Clear Cache
-1. You can clear a cache database using "destroy" method.
+You can clear a cache database using "destroy" method.
 ```php
 Nest::destroy('db')
 ```
-2. You can clear all your cache database using "destroyAll" method.
+You can clear all your cache database using "destroyAll" method.
 ```php
 Nest::destroyAll()
 ```
