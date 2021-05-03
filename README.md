@@ -7,7 +7,7 @@ Is a simple file-based PHP caching library.
 ## Features
 1. Maximize the use of PHP's opcache capability.
 2. Create multiple cache databases.
-3. Easy integration with any PHP framework or no framework at all.
+3. Easy integration with any PHP framework or use with no framework at all.
 
 ## Installation
 1. You can install via composer.
