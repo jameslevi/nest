@@ -303,6 +303,16 @@ class Nest
     }
 
     /**
+     * Return the number of data from cache database.
+     * 
+     * @return  int
+     */
+    public function size()
+    {
+        return count($this->data->keys());
+    }
+
+    /**
      * Return cache array data.
      * 
      * @return  array
@@ -415,7 +425,7 @@ class Nest
      * @param   string $key
      * @return  mixed
      */
-    public static function context(string $key)
+    private static function context(string $key)
     {
         return self::exists($key) ? self::$repository[self::hash($key)] : new self($key, self::getStoragePath());
     }
@@ -436,15 +446,22 @@ class Nest
 
         if(!is_null($obj))
         {
-            if(!is_null($val) && $obj->has($val))
+            if(!is_null($val))
             {
-                if(!is_null($set))
+                if($obj->has($val))
                 {
-                    $obj->set($val, $set);
+                    if(!is_null($set))
+                    {
+                        $obj->set($val, $set);
+                    }
+                    else
+                    {
+                        return $obj->get($val);
+                    }
                 }
                 else
                 {
-                    return $obj->get($val);
+                    return false;
                 }
             }
 
