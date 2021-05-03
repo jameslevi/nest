@@ -131,6 +131,16 @@ Nest::db()->add('token', '1jds9ds93209sdds')->write()
 Nest::db()->remove('token')->write()
 ```
 
+## Clear Cache
+1. You can clear a cache database using "destroy" method.
+```php
+Nest::destroy('db')
+```
+2. You can clear all your cache database using "destroyAll" method.
+```php
+Nest::destroyAll()
+```
+
 ## Contribution
 For issues, concerns and suggestions, you can email James Crisostomo via nerdlabenterprise@gmail.com.
 
