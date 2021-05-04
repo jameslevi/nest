@@ -11,7 +11,7 @@ class Nest
      * 
      * @var string
      */
-    private static $version = "v1.0.1";
+    private static $version = "v1.0.2";
 
     /**
      * Store loaded cache objects.
