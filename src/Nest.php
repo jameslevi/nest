@@ -143,10 +143,10 @@ class Nest
         {
             if(file_exists($path) && is_readable($path))
             {
-                $data = require $path;
-
-                self::$repository[$this->hash] = $this;
+                $data = include $path;
             }
+
+            self::$repository[$this->hash] = $this;
         }
         else
         {
@@ -176,7 +176,7 @@ class Nest
             }
 
             $file = fopen($path, "w");
-            fwrite($file, "<?php return " . var_export($this->data->toArray(), true) . ";");
+            fwrite($file, "<?php return " . var_export($this->toArray(), true) . ";");
             fclose($file);
             chmod($path, 0777);
         }
@@ -431,7 +431,7 @@ class Nest
      * @param   string $key
      * @return  bool
      */
-    public static function exists(string $key)
+    private static function exists(string $key)
     {
         return array_key_exists(self::hash($key), self::$repository);
     }
@@ -497,17 +497,6 @@ class Nest
     }
 
     /**
-     * Return cache instance object.
-     * 
-     * @param   string $key
-     * @return  mixed
-     */
-    private static function context(string $key)
-    {
-        return self::exists($key) ? self::$repository[self::hash($key)] : new self($key, self::getStoragePath());
-    }
-
-    /**
      * Return cache data as object property.
      * 
      * @param   string $key
@@ -540,7 +529,7 @@ class Nest
     public static function __callStatic(string $name, array $arguments)
     {
         $key = str_camel_to_kebab($name);
-        $obj = self::context($key);
+        $obj = self::exists($key) ? self::$repository[self::hash($key)] : new self($key, self::getStoragePath());
         $val = $arguments[0] ?? null;
         $set = $arguments[1] ?? null;
 
