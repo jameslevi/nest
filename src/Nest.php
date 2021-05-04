@@ -120,13 +120,23 @@ class Nest
     }
 
     /**
+     * Return the path of cache file.
+     * 
+     * @return  string
+     */
+    private function cachePath()
+    {
+        return $this->path . "/" . $this->getHash() . "." . self::$ext;
+    }
+
+    /**
      * Load the stored cache file from the storage.
      * 
      * @return  void
      */
     private function load()
     {
-        $path = $this->path . "/" . $this->getHash() . "." . self::$ext;
+        $path = $this->cachePath();
         $data = array();
 
         if(!self::exists($this->name))
@@ -158,7 +168,7 @@ class Nest
     {
         if($this->changed && $this->changes > 0)
         {
-            $path = $this->path . "/" . $this->getHash() . "." . self::$ext;
+            $path = $this->cachePath();
             
             if(file_exists($path) && is_writable($path))
             {
@@ -495,6 +505,29 @@ class Nest
     private static function context(string $key)
     {
         return self::exists($key) ? self::$repository[self::hash($key)] : new self($key, self::getStoragePath());
+    }
+
+    /**
+     * Return cache data as object property.
+     * 
+     * @param   string $key
+     * @return  mixed
+     */
+    public function __get(string $key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Update the value of cache data.
+     * 
+     * @param   string $key
+     * @param   mixed $value
+     * @return  void
+     */
+    public function __set(string $key, $value)
+    {
+        $this->set($key, $value);
     }
 
     /**
