@@ -5,7 +5,7 @@
 Is a simple file-based PHP caching library.
 
 ## Features
-1. Maximize the use of PHP's opcache in caching static data.
+1. Uses PHP's opcache to cache static data.
 2. Create multiple cache databases.
 3. Easy integration with any PHP framework or use with no framework at all.
 
