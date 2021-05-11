@@ -16,12 +16,7 @@ composer require jameslevi/nest
 ```
 2. If not using any framework, paste the following code to load the autoloader in your project.
 ```php
-<?php
-
-if(file_exists(__DIR__.'/vendor/autoload.php'))
-{
-    require __DIR__.'/vendor/autoload.php';
-}
+require_once __DIR__.'/vendor/autoload.php';
 ```
 3. Import nest into your project.
 ```php
@@ -29,7 +24,7 @@ use Graphite\Component\Nest\Nest;
 ```
 4. Set the default storage path for your project.
 ```php
-Nest::setStoragePath(__DIR__ . "/storage/cache");
+Nest::setStoragePath(__DIR__."/storage/cache");
 ```
 5. Set the default hash algorithm to use. The default algorithm is "md5".
 ```php
@@ -44,7 +39,7 @@ Let us try a simple caching for database configuration.
 use Graphite\Component\Nest\Nest;
 
 // Set the default storage path.
-Nest::setStoragePath(__DIR__ . "/storage/cache");
+Nest::setStoragePath(__DIR__."/storage/cache");
 
 // Set the default hash algorithm.
 Nest::setHashAlgorithm("md5");
@@ -52,7 +47,7 @@ Nest::setHashAlgorithm("md5");
 // Create a new nest database instance.
 $db = new Nest("db");
 
-// Add the data to cache.
+// Add data to cache.
 $db->add("host", "localhost");
 $db->add("port", 8080);
 $db->add("username", "root");
@@ -78,67 +73,72 @@ This will generate a PHP file with the following content.
 ## Getting Started
 1. You can get values using the "get" method.
 ```php
-$db->get("host") // Returns "localhost".
+$db->get("host"); // Returns "localhost".
 ```
 2. You can add new key-value using "add" method.
 ```php
-$db->add("tables", ["user_logs", "user_contacts", "user_address"]) // The array will be converted into json string.
+// Array will be automatically converted into json string.
+$db->add("tables", array(
+    "user_logs", 
+    "user_contacts", 
+    "user_address"
+)); 
 ```
 3. You can update key values using "set" method.
 ```php
-$db->set("password", "abc") // Change the value of password from "123" to "abc".
+$db->set("password", "abc"); // Change the value of password from "123" to "abc".
 ```
 4. All added or updated data will be only saved unless you call the "write" method.
 ```php
-$db->write()
+$db->write();
 ```
 5. You can check if a key-value exists using "has" method.
 ```php
-$db->has("charset") // Returns true because charset exists from our cache.
+$db->has("charset"); // Returns true because charset exists from our cache.
 ```
 6. You can remove a key-value using "remove" method.
 ```php
-$db->remove("port") // This will delete port from our cache.
+$db->remove("port"); // This will delete port from our cache.
 ```
 7. You can return cache data as array using "toArray" method.
 ```php
-$db->toArray()
+$db->toArray();
 ```
 8. You can return json formatted cache data using "toJson" method.
 ```php
-$db->toJson()
+$db->toJson();
 ```
 
 ## Using Nest Facade
 1. You can return nest instance by calling a static method that defines the name of your cache database.
 ```php
-Nest::db() // Is equal to "new Nest('db')"
+Nest::db(); // Is equal to "new Nest('db')"
 ```
 2. You can return key-value by providing the first argument.
 ```php
-Nest::db('charset') // Will return "utf-8".
+Nest::db('charset'); // Will return "utf-8".
 ```
 3. You can update data by providingthe second argument.
 ```php
-Nest::db('username', 'james')->write() // Will change the value of username from "root" to "james".
+Nest::db('username', 'james')->write(); // Will change the value of username from "root" to "james".
 ```
 4. You can add new data by calling "add" method.
 ```php
-Nest::db()->add('token', '1jds9ds93209sdds')->write()
+Nest::db()->add('token', '1jds9ds93209sdds')->write();
 ```
 5. You can remove key-value using "remove" method.
 ```php
-Nest::db()->remove('token')->write()
+Nest::db()->remove('token')->write();
 ```
 
 ## Clear Cache
 You can clear a cache database using "destroy" method.
 ```php
-Nest::destroy('db')
+Nest::destroy('db');
 ```
 You can clear all your cache database using "destroyAll" method.
 ```php
-Nest::destroyAll()
+Nest::destroyAll();
 ```
 
 ## Contribution
